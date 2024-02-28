@@ -17,7 +17,7 @@ import Copyright from './components/Copyright';
 import EmployeeService from "../services/Employee";
 import NavBar from './components/NavBar';
 import SnackBar from './components/SnackBar';
-import validation from '../validation/validation';
+import validation from '../validation/Validation';
 
 const defaultTheme = createTheme();
 
@@ -117,6 +117,7 @@ export default function SignUp() {
               flexDirection: 'column',
               alignItems: 'center',
             }}
+
           >
             <Typography component="h1" variant="h5">
               {localStorage.getItem("user") == null ? "Sign Up" : "Profile" }
@@ -129,7 +130,7 @@ export default function SignUp() {
                 : (message === "error" ? <SnackBar type={"error"} message={"Sign up failed!"} open={true}/> : null))
              : (message === "error" ? <SnackBar type={"error"} message={"Updating profile failed"} open={true}/> : null)
             }
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' }}}>
               <TextField
                 margin="normal"
                 required
@@ -151,7 +152,6 @@ export default function SignUp() {
                 value={lastName}
                 onChange={(e)=>setLastName(e.target.value)}
               />
-              {emailVaid}
               <TextField
                 margin="normal"
                 required
@@ -161,7 +161,9 @@ export default function SignUp() {
                 name="email"
                 value={email}
                 onChange={(e)=>setEmail(e.target.value)}
-                onMouseOut={(e)=>{setEmailValid(e.target.value)}}
+                onMouseOut={(e)=>{setEmailValid(validation.emailValidation(e.target.value))}}
+                FormHelperTextProps={{ sx: {color: 'red'}}}
+                helperText={emailVaid}
               />
               <TextField
                 margin="normal"
